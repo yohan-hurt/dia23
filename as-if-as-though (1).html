@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expediente AS-IF-001 · Como si...</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#e9e1cc;
+    --paper-light:#f6f1e3;
+    --paper-dark:#dcd2b4;
+    --ink:#221f1a;
+    --ink-soft:#5a5346;
+    --stamp-red:#a2352a;
+    --stamp-red-dim:#c98f87;
+    --mustard:#b8862f;
+    --line:#c7bb9a;
+    --green-ok:#3c6e47;
+    --green-bg:#e3ecdf;
+    --red-bg:#f3e0dd;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(0,0,0,0.03), transparent 40%),
+      radial-gradient(circle at 90% 80%, rgba(0,0,0,0.03), transparent 40%);
+    color:var(--ink);
+    font-family:'Newsreader', serif;
+    line-height:1.6;
+  }
+  h1,h2,h3,.mono-label,button,.tab{font-family:'IBM Plex Mono', monospace;}
+  .display{font-family:'Special Elite', 'IBM Plex Mono', monospace;}
+
+  a{color:var(--stamp-red);}
+
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    padding:56px 20px 70px;
+    border-bottom:3px double var(--ink);
+    overflow:hidden;
+  }
+  .case-tag{
+    display:inline-block;
+    font-size:0.75rem;
+    letter-spacing:0.12em;
+    color:var(--ink-soft);
+    background:var(--paper-light);
+    border:1px solid var(--line);
+    padding:4px 10px;
+    margin-bottom:18px;
+  }
+  .hero h1{
+    font-size:clamp(2.1rem, 6vw, 3.6rem);
+    line-height:1.05;
+    margin:0 0 14px;
+    max-width:760px;
+  }
+  .hero h1 em{
+    font-style:normal;
+    color:var(--stamp-red);
+  }
+  .hero p.lead{
+    max-width:560px;
+    font-size:1.08rem;
+    color:var(--ink-soft);
+    margin:0;
+  }
+  .stamp{
+    position:absolute;
+    top:38px;
+    right:24px;
+    width:150px;
+    height:150px;
+    border:4px solid var(--stamp-red);
+    border-radius:50%;
+    color:var(--stamp-red);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    transform:rotate(-14deg);
+    font-family:'Special Elite', monospace;
+    font-size:0.95rem;
+    letter-spacing:0.06em;
+    opacity:0.85;
+    transition:all .5s ease;
+    line-height:1.3;
+    padding:8px;
+  }
+  .stamp.solved{
+    border-color:var(--green-ok);
+    color:var(--green-ok);
+    transform:rotate(-8deg) scale(1.03);
+  }
+  @media (max-width:640px){
+    .stamp{position:static;transform:rotate(-6deg);margin-top:24px;width:130px;height:130px;font-size:0.85rem;}
+  }
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:54px 20px;}
+  .section-head{margin-bottom:34px;}
+  .eyebrow{
+    font-size:0.75rem;
+    letter-spacing:0.14em;
+    color:var(--stamp-red);
+    text-transform:uppercase;
+    margin:0 0 8px;
+  }
+  h2.section-title{
+    font-size:clamp(1.5rem,4vw,2.1rem);
+    margin:0;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:10px;
+  }
+
+  /* ---------- EVIDENCE CARDS (explicación) ---------- */
+  .evidence{
+    background:var(--paper-light);
+    border:1px solid var(--line);
+    border-left:5px solid var(--mustard);
+    padding:22px 24px;
+    margin-bottom:22px;
+    position:relative;
+  }
+  .evidence h3{
+    margin:0 0 10px;
+    font-size:0.95rem;
+    letter-spacing:0.04em;
+    color:var(--ink);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .evidence h3 .tag-num{
+    background:var(--ink);
+    color:var(--paper-light);
+    font-size:0.7rem;
+    padding:2px 7px;
+    border-radius:2px;
+  }
+  .evidence p{margin:0 0 10px;}
+  .evidence p:last-child{margin-bottom:0;}
+  .quote-block{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.92rem;
+    background:var(--paper);
+    border:1px dashed var(--line);
+    padding:10px 14px;
+    margin:10px 0;
+  }
+  .quote-block .es{
+    display:block;
+    color:var(--ink-soft);
+    font-size:0.82rem;
+    margin-top:4px;
+    font-style:italic;
+  }
+  .compare-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-top:10px;
+  }
+  @media (max-width:600px){.compare-grid{grid-template-columns:1fr;}}
+  .compare-box{
+    border:1px solid var(--line);
+    padding:12px 14px;
+    background:var(--paper);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.88rem;
+  }
+  .compare-box .label{
+    display:block;
+    font-size:0.7rem;
+    color:var(--stamp-red);
+    letter-spacing:0.08em;
+    margin-bottom:6px;
+  }
+  .rule-box{
+    background:#f1e6d3;
+    border:1px solid var(--mustard);
+    padding:16px 18px;
+    margin-top:14px;
+    font-size:0.95rem;
+  }
+  .rule-box strong{color:var(--stamp-red);}
+
+  /* ---------- GAMES ---------- */
+  .games-intro{color:var(--ink-soft);max-width:640px;}
+  .progress-board{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin:22px 0 40px;
+  }
+  .progress-pin{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.78rem;
+    border:1px solid var(--line);
+    background:var(--paper-light);
+    padding:6px 12px;
+    border-radius:2px;
+    color:var(--ink-soft);
+    transition:all .3s ease;
+  }
+  .progress-pin.done{
+    background:var(--green-bg);
+    border-color:var(--green-ok);
+    color:var(--green-ok);
+  }
+
+  .exhibit{
+    background:var(--paper-light);
+    border:1px solid var(--line);
+    margin-bottom:34px;
+    box-shadow:3px 3px 0 rgba(34,31,26,0.06);
+  }
+  .exhibit-head{
+    padding:18px 22px;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    flex-wrap:wrap;
+    gap:6px;
+  }
+  .exhibit-head h3{margin:0;font-size:1.05rem;}
+  .exhibit-letter{
+    font-size:0.72rem;
+    color:var(--stamp-red);
+    letter-spacing:0.1em;
+  }
+  .exhibit-body{padding:22px;}
+  .exhibit-body p.intro{color:var(--ink-soft);margin-top:0;font-size:0.95rem;}
+
+  .clue-box{
+    background:var(--paper);
+    border:1px dashed var(--line);
+    padding:14px 16px;
+    font-size:0.98rem;
+    margin-bottom:16px;
+  }
+
+  select, input[type="text"], textarea{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.92rem;
+    border:1px solid var(--ink-soft);
+    background:#fff;
+    padding:9px 10px;
+    width:100%;
+    color:var(--ink);
+  }
+  select:focus, input[type="text"]:focus, textarea:focus{
+    outline:2px solid var(--mustard);
+    outline-offset:1px;
+  }
+  label.field-label{
+    display:block;
+    font-size:0.72rem;
+    letter-spacing:0.06em;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+    text-transform:uppercase;
+  }
+  .field{margin-bottom:14px;}
+  .field-row{display:flex;gap:14px;flex-wrap:wrap;}
+  .field-row .field{flex:1;min-width:200px;}
+
+  button{
+    background:var(--ink);
+    color:var(--paper-light);
+    border:none;
+    padding:10px 18px;
+    font-size:0.82rem;
+    letter-spacing:0.04em;
+    cursor:pointer;
+    transition:background .2s ease;
+  }
+  button:hover{background:var(--stamp-red);}
+  button.ghost{
+    background:transparent;
+    border:1px solid var(--ink-soft);
+    color:var(--ink-soft);
+  }
+  button.ghost:hover{background:var(--ink-soft);color:var(--paper-light);}
+  button:disabled{opacity:0.4;cursor:not-allowed;}
+
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;}
+
+  .feedback{
+    margin-top:14px;
+    padding:12px 14px;
+    font-size:0.9rem;
+    border-left:4px solid transparent;
+    display:none;
+  }
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--green-bg);border-color:var(--green-ok);color:#294a31;}
+  .feedback.bad{background:var(--red-bg);border-color:var(--stamp-red);color:#7a2a20;}
+  .feedback.bad.shake{animation:shake .4s ease;}
+  @keyframes shake{
+    0%,100%{transform:translateX(0);}
+    20%{transform:translateX(-6px);}
+    40%{transform:translateX(6px);}
+    60%{transform:translateX(-4px);}
+    80%{transform:translateX(4px);}
+  }
+
+  .case-counter{font-size:0.78rem;color:var(--ink-soft);margin-top:16px;}
+
+  /* Toggle switch (Game 2) */
+  .toggle-row{display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap;}
+  .switch{
+    position:relative;
+    width:120px;
+    height:38px;
+    background:var(--ink);
+    border-radius:20px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    padding:0 10px;
+    justify-content:space-between;
+    user-select:none;
+  }
+  .switch .knob{
+    position:absolute;
+    top:3px;
+    left:3px;
+    width:32px;
+    height:32px;
+    background:var(--mustard);
+    border-radius:50%;
+    transition:left .25s ease;
+  }
+  .switch.formal .knob{left:calc(100% - 35px);}
+  .switch span{font-size:0.62rem;color:var(--paper-light);letter-spacing:0.04em;z-index:1;}
+  .mode-label{font-family:'IBM Plex Mono',monospace;font-size:0.8rem;color:var(--ink-soft);}
+  .mode-label strong{color:var(--ink);}
+
+  .sentence-display{
+    font-size:1.05rem;
+    padding:14px 16px;
+    background:var(--paper);
+    border:1px dashed var(--line);
+    margin-bottom:16px;
+  }
+  .sentence-display .broken{
+    color:var(--stamp-red);
+    text-decoration:line-through;
+    opacity:0.6;
+  }
+
+  /* Game 4 wall */
+  .starter-picker{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .starter-chip{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.78rem;
+    border:1px solid var(--line);
+    background:var(--paper);
+    padding:7px 12px;
+    cursor:pointer;
+  }
+  .starter-chip.active{background:var(--ink);color:var(--paper-light);border-color:var(--ink);}
+  .wall{
+    margin-top:22px;
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:12px;
+  }
+  .wall-card{
+    background:#fffdf6;
+    border:1px solid var(--line);
+    border-top:6px solid var(--mustard);
+    padding:14px 14px 12px;
+    font-size:0.9rem;
+    transform:rotate(var(--r,-1deg));
+    box-shadow:2px 2px 0 rgba(0,0,0,0.05);
+  }
+  .wall-empty{color:var(--ink-soft);font-size:0.88rem;font-style:italic;}
+
+  footer{
+    text-align:center;
+    padding:34px 20px 50px;
+    color:var(--ink-soft);
+    font-size:0.82rem;
+    border-top:1px solid var(--line);
+  }
+
+  @media (max-width:600px){
+    section{padding:40px 16px;}
+    .exhibit-body{padding:16px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="case-tag">EXPEDIENTE Nº AS-IF-001 · GRAMÁTICA INGLESA</span>
+    <h1 class="display">El caso de <em>"as if"</em> y <em>"as though"</em></h1>
+    <p class="lead">Una investigación sobre cómo el inglés describe lo que <em>parece</em> ser cierto, basada en la lección de <strong>Aprende inglés con Marcos</strong>. Sentidos, sospechas y una regla gramatical que casi nadie usa bien: "were".</p>
+  </div>
+  <div class="stamp" id="mainStamp">CASO<br>ABIERTO</div>
+</header>
+
+<main class="wrap">
+
+  <!-- ================= EXPLICACIÓN ================= -->
+  <section id="expediente">
+    <div class="section-head">
+      <p class="eyebrow">Parte 1</p>
+      <h2 class="section-title">El expediente: qué significa "como si"</h2>
+    </div>
+
+    <div class="evidence">
+      <h3><span class="tag-num">01</span> La definición</h3>
+      <p><strong>As if</strong> y <strong>as though</strong> significan "como si". Sirven para describir una impresión, una comparación o una situación figurada: algo que parece cierto según lo que percibimos, aunque no sepamos si lo es.</p>
+    </div>
+
+    <div class="evidence">
+      <h3><span class="tag-num">02</span> Los verbos de los sentidos: la pista principal</h3>
+      <p>La conexión más importante es con los <strong>sense verbs</strong>: <em>look, sound, smell, feel, taste</em>. Describimos una impresión sensorial y luego explicamos "como si" fuera cierta.</p>
+      <div class="quote-block">
+        That house looks as if it's going to fall down.
+        <span class="es">Esa casa parece como si se fuera a caer. (posibilidad real)</span>
+      </div>
+      <div class="quote-block">
+        Ana sounded as if she had a cold.
+        <span class="es">Ana sonaba como si tuviera un resfriado.</span>
+      </div>
+    </div>
+
+    <div class="evidence">
+      <h3><span class="tag-num">03</span> Comparativa: adjetivo vs. cláusula completa</h3>
+      <p>"As if" no es la única forma de decir esto, pero introduce una cláusula completa, más descriptiva que un simple adjetivo.</p>
+      <div class="compare-grid">
+        <div class="compare-box"><span class="label">FORMA DIRECTA</span>You look tired.</div>
+        <div class="compare-box"><span class="label">CON AS IF</span>You look as if you haven't slept.</div>
+      </div>
+    </div>
+
+    <div class="evidence">
+      <h3><span class="tag-num">04</span> El sospechoso informal: "like"</h3>
+      <p>En el inglés hablado, <strong>like</strong> reemplaza perfectamente a "as if / as though", y de hecho es mucho más común que la forma formal.</p>
+      <div class="quote-block">
+        Sandra is late. It looks like she isn't coming.
+        <span class="es">Versión formal equivalente: ...it looks as if she isn't coming.</span>
+      </div>
+    </div>
+
+    <div class="evidence">
+      <h3><span class="tag-num">05</span> No solo con los sentidos</h3>
+      <p>La estructura también acompaña verbos de acción, no únicamente los de percepción.</p>
+      <div class="quote-block">
+        He ran as if he was running for his life.
+        <span class="es">Corría como si su vida dependiera de ello.</span>
+      </div>
+    </div>
+
+    <div class="evidence">
+      <h3><span class="tag-num">06</span> La pieza clave: el pasado irreal con "were"</h3>
+      <p>Cuando la idea después de "as if" es totalmente irreal o hipotética (no es cierta, solo lo parece), el verbo <em>to be</em> se conjuga como <strong>were</strong> para todos los sujetos. Es la misma lógica del segundo condicional ("If I were you...").</p>
+      <div class="quote-block">
+        She is always asking for favors as if I were not busy.
+        <span class="es">Siempre pide favores como si yo no estuviera ocupado... pero la realidad es que sí lo estoy.</span>
+      </div>
+      <div class="rule-box">
+        <strong>Nota del expediente:</strong> en inglés muy informal o en canciones vas a escuchar "was" en su lugar. Pero la gramática correcta, sobre todo escrita, exige <strong>were</strong>, sin importar el sujeto.
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= JUEGOS ================= -->
+  <section id="pruebas">
+    <div class="section-head">
+      <p class="eyebrow">Parte 2</p>
+      <h2 class="section-title">La sala de pruebas</h2>
+      <p class="games-intro">Cuatro ejercicios para poner el expediente a prueba. Resuelve los cuatro y el caso queda cerrado.</p>
+      <div class="progress-board" id="progressBoard">
+        <span class="progress-pin" data-pin="A">A · Detective de los sentidos</span>
+        <span class="progress-pin" data-pin="B">B · Like vs. As if</span>
+        <span class="progress-pin" data-pin="C">C · La trampa irreal</span>
+        <span class="progress-pin" data-pin="D">D · Muro de exageraciones</span>
+      </div>
+    </div>
+
+    <!-- EXHIBIT A -->
+    <article class="exhibit" id="exhibitA">
+      <div class="exhibit-head">
+        <h3>El detective de los sentidos</h3>
+        <span class="exhibit-letter">PRUEBA A</span>
+      </div>
+      <div class="exhibit-body">
+        <p class="intro">Lee la pista, elige el verbo de sentido correcto y completa la frase con "as if" o "as though".</p>
+        <div class="clue-box" id="clueText">Cargando pista...</div>
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label" for="verbSelect">Verbo de sentido</label>
+            <select id="verbSelect">
+              <option value="">elige uno</option>
+              <option value="looks">looks</option>
+              <option value="sounds">sounds</option>
+              <option value="smells">smells</option>
+              <option value="feels">feels</option>
+              <option value="tastes">tastes</option>
+            </select>
+          </div>
+          <div class="field" style="flex:2;min-width:260px;">
+            <label class="field-label" for="clauseInput">Completa la frase (ej: as if it's raining)</label>
+            <input type="text" id="clauseInput" placeholder="as if / as though ...">
+          </div>
+        </div>
+        <div class="btn-row">
+          <button id="checkClueBtn">Enviar pista</button>
+          <button class="ghost" id="nextClueBtn" disabled>Siguiente pista →</button>
+        </div>
+        <div class="feedback" id="clueFeedback"></div>
+        <p class="case-counter" id="clueCounter">Pista 1 de 5</p>
+      </div>
+    </article>
+
+    <!-- EXHIBIT B -->
+    <article class="exhibit" id="exhibitB">
+      <div class="exhibit-head">
+        <h3>Like vs. As if: el traductor</h3>
+        <span class="exhibit-letter">PRUEBA B</span>
+      </div>
+      <div class="exhibit-body">
+        <p class="intro">Cambia el interruptor a "Textbook" y reescribe la frase informal usando "as if" o "as though".</p>
+        <div class="toggle-row">
+          <span class="mode-label">Street Talk</span>
+          <div class="switch" id="modeSwitch" role="button" tabindex="0" aria-label="Cambiar modo">
+            <span>~</span><span>Aa</span>
+            <div class="knob"></div>
+          </div>
+          <span class="mode-label"><strong id="modeName">Street Talk</strong></span>
+        </div>
+        <div class="sentence-display" id="sentenceDisplay"></div>
+        <div class="field" id="rewriteField" style="display:none;">
+          <label class="field-label" for="rewriteInput">Reescribe en formal</label>
+          <input type="text" id="rewriteInput" placeholder="It looks as if / as though ...">
+        </div>
+        <div class="btn-row">
+          <button id="checkRewriteBtn" style="display:none;">Verificar</button>
+          <button class="ghost" id="nextSentenceBtn">Siguiente frase →</button>
+        </div>
+        <div class="feedback" id="rewriteFeedback"></div>
+        <p class="case-counter" id="sentenceCounter">Frase 1 de 4</p>
+      </div>
+    </article>
+
+    <!-- EXHIBIT C -->
+    <article class="exhibit" id="exhibitC">
+      <div class="exhibit-head">
+        <h3>La trampa irreal</h3>
+        <span class="exhibit-letter">PRUEBA C</span>
+      </div>
+      <div class="exhibit-body">
+        <p class="intro">Completa el espacio en blanco. Recuerda: si la situación es irreal, el verbo "to be" siempre es <strong>were</strong>.</p>
+        <div class="clue-box" id="trapPrompt">Cargando...</div>
+        <div class="field">
+          <label class="field-label" for="trapInput">Tu respuesta</label>
+          <input type="text" id="trapInput" placeholder="as if / as though ...">
+        </div>
+        <div class="btn-row">
+          <button id="checkTrapBtn">Comprobar</button>
+          <button class="ghost" id="nextTrapBtn" disabled>Siguiente →</button>
+        </div>
+        <div class="feedback" id="trapFeedback"></div>
+        <p class="case-counter" id="trapCounter">Caso 1 de 5</p>
+      </div>
+    </article>
+
+    <!-- EXHIBIT D -->
+    <article class="exhibit" id="exhibitD">
+      <div class="exhibit-head">
+        <h3>El constructor de exageraciones</h3>
+        <span class="exhibit-letter">PRUEBA D</span>
+      </div>
+      <div class="exhibit-body">
+        <p class="intro">Elige un inicio dramático y complétalo con tu propia idea. Se queda pegado en el muro de la clase.</p>
+        <div class="starter-picker" id="starterPicker"></div>
+        <div class="field">
+          <label class="field-label" for="exagInput">Termina la frase</label>
+          <textarea id="exagInput" rows="2" placeholder="...como si el mundo se fuera a acabar"></textarea>
+        </div>
+        <div class="btn-row">
+          <button id="addWallBtn">Agregar al muro</button>
+        </div>
+        <div class="feedback" id="wallFeedback"></div>
+        <div class="wall" id="wallContainer">
+          <p class="wall-empty">El muro está vacío. Sé el primero en exagerar.</p>
+        </div>
+      </div>
+    </article>
+  </section>
+</main>
+
+<footer>
+  Basado en la lección "As if / As though" de Aprende inglés con Marcos · Expediente cerrado cuando resuelvas las 4 pruebas.
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  var solved = {A:false, B:false, C:false, D:false};
+
+  function markSolved(letter){
+    if(solved[letter]) return;
+    solved[letter] = true;
+    var pin = document.querySelector('.progress-pin[data-pin="'+letter+'"]');
+    if(pin) pin.classList.add('done');
+    var allDone = Object.keys(solved).every(function(k){return solved[k];});
+    if(allDone){
+      var stamp = document.getElementById('mainStamp');
+      stamp.classList.add('solved');
+      stamp.innerHTML = 'CASO<br>RESUELTO';
+    }
+  }
+
+  function showFeedback(el, ok, msg, shake){
+    el.className = 'feedback show ' + (ok ? 'ok' : 'bad') + (shake ? ' shake' : '');
+    el.textContent = msg;
+    // restart shake animation on repeated wrong answers
+    if(shake){
+      el.classList.remove('shake');
+      void el.offsetWidth;
+      el.classList.add('shake');
+    }
+  }
+
+  /* ============ EXHIBIT A: Detective de los sentidos ============ */
+  var clues = [
+    {clue: 'Entras a la cocina y notas un olor extraño saliendo del horno.', verb:'smells'},
+    {clue: 'Miras al cielo y ves nubes negras enormes acercándose.', verb:'looks'},
+    {clue: 'Tu vecino te habla por teléfono tosiendo y con la voz ronca.', verb:'sounds'},
+    {clue: 'Tocas la manga de esta chaqueta nueva y es increíblemente suave.', verb:'feels'},
+    {clue: 'Pruebas la sopa que preparó tu compañero y está bastante desabrida.', verb:'tastes'}
+  ];
+  var clueIndex = 0;
+
+  var clueTextEl = document.getElementById('clueText');
+  var verbSelect = document.getElementById('verbSelect');
+  var clauseInput = document.getElementById('clauseInput');
+  var checkClueBtn = document.getElementById('checkClueBtn');
+  var nextClueBtn = document.getElementById('nextClueBtn');
+  var clueFeedback = document.getElementById('clueFeedback');
+  var clueCounter = document.getElementById('clueCounter');
+
+  function loadClue(){
+    var c = clues[clueIndex];
+    clueTextEl.textContent = c.clue;
+    verbSelect.value = '';
+    clauseInput.value = '';
+    clueFeedback.className = 'feedback';
+    clueFeedback.textContent = '';
+    nextClueBtn.disabled = true;
+    checkClueBtn.disabled = false;
+    clueCounter.textContent = 'Pista ' + (clueIndex+1) + ' de ' + clues.length;
+  }
+
+  checkClueBtn.addEventListener('click', function(){
+    var c = clues[clueIndex];
+    var verbOk = verbSelect.value === c.verb;
+    var text = clauseInput.value.trim().toLowerCase();
+    var hasConnector = /\bas (if|though)\b/.test(text);
+    var hasSomethingAfter = hasConnector && text.replace(/\bas (if|though)\b/, '').trim().length > 2;
+
+    if(verbOk && hasSomethingAfter){
+      showFeedback(clueFeedback, true, '¡Correcto! "' + c.verb + '" es el verbo de sentido adecuado, y tu cláusula con "as if / as though" está bien construida.', false);
+      nextClueBtn.disabled = false;
+      checkClueBtn.disabled = true;
+    } else if(!verbOk && hasSomethingAfter){
+      showFeedback(clueFeedback, false, 'Tu cláusula está bien armada, pero el verbo de sentido no es el que mejor encaja con esta pista. Pista: ¿qué sentido estás usando en la escena?', true);
+    } else if(verbOk && !hasSomethingAfter){
+      showFeedback(clueFeedback, false, 'Elegiste bien el verbo, pero falta completar con "as if" o "as though" seguido de una idea.', true);
+    } else {
+      showFeedback(clueFeedback, false, 'Todavía no. Revisa el verbo de sentido y recuerda usar "as if" o "as though" antes de tu idea.', true);
+    }
+  });
+
+  nextClueBtn.addEventListener('click', function(){
+    clueIndex++;
+    if(clueIndex >= clues.length){
+      markSolved('A');
+      clueTextEl.textContent = 'Pruebas completas. Buen trabajo, detective.';
+      verbSelect.disabled = true;
+      clauseInput.disabled = true;
+      checkClueBtn.style.display = 'none';
+      nextClueBtn.style.display = 'none';
+      clueCounter.textContent = clues.length + ' de ' + clues.length + ' resueltas';
+      return;
+    }
+    loadClue();
+  });
+
+  loadClue();
+
+  /* ============ EXHIBIT B: Like vs As if ============ */
+  var sentences = [
+    {informal:"It looks like it's going to rain.", keywords:['going','rain']},
+    {informal:"It looks like she isn't coming.", keywords:['isn', 'coming', 'not']},
+    {informal:"You sound like you've had a rough day.", keywords:['rough','day','had']},
+    {informal:"He looks like he hasn't slept.", keywords:['slept','hasn']}
+  ];
+  var sentenceIndex = 0;
+  var isFormal = false;
+
+  var modeSwitch = document.getElementById('modeSwitch');
+  var modeName = document.getElementById('modeName');
+  var sentenceDisplay = document.getElementById('sentenceDisplay');
+  var rewriteField = document.getElementById('rewriteField');
+  var rewriteInput = document.getElementById('rewriteInput');
+  var checkRewriteBtn = document.getElementById('checkRewriteBtn');
+  var nextSentenceBtn = document.getElementById('nextSentenceBtn');
+  var rewriteFeedback = document.getElementById('rewriteFeedback');
+  var sentenceCounter = document.getElementById('sentenceCounter');
+
+  function renderSentence(){
+    var s = sentences[sentenceIndex];
+    sentenceCounter.textContent = 'Frase ' + (sentenceIndex+1) + ' de ' + sentences.length;
+    rewriteFeedback.className = 'feedback';
+    rewriteFeedback.textContent = '';
+    rewriteInput.value = '';
+    if(isFormal){
+      sentenceDisplay.innerHTML = '<span class="broken">' + s.informal + '</span>';
+      rewriteField.style.display = 'block';
+      checkRewriteBtn.style.display = 'inline-block';
+    } else {
+      sentenceDisplay.textContent = s.informal;
+      rewriteField.style.display = 'none';
+      checkRewriteBtn.style.display = 'none';
+    }
+  }
+
+  function setMode(formal){
+    isFormal = formal;
+    modeSwitch.classList.toggle('formal', formal);
+    modeName.textContent = formal ? 'Textbook' : 'Street Talk';
+    renderSentence();
+  }
+
+  modeSwitch.addEventListener('click', function(){ setMode(!isFormal); });
+  modeSwitch.addEventListener('keydown', function(e){
+    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); setMode(!isFormal); }
+  });
+
+  checkRewriteBtn.addEventListener('click', function(){
+    var s = sentences[sentenceIndex];
+    var text = rewriteInput.value.trim().toLowerCase();
+    var hasConnector = /\bas (if|though)\b/.test(text);
+    var keywordHits = s.keywords.filter(function(k){ return text.indexOf(k) !== -1; }).length;
+
+    if(hasConnector && keywordHits >= 1){
+      showFeedback(rewriteFeedback, true, 'Exacto: "' + s.informal.replace('like','as if') + '" (o "as though") es la versión de "textbook".', false);
+      var allChecked = sentenceIndex === sentences.length - 1;
+      if(allChecked) markSolved('B');
+    } else if(!hasConnector){
+      showFeedback(rewriteFeedback, false, 'En modo "Textbook" necesitas usar "as if" o "as though" en vez de "like".', true);
+    } else {
+      showFeedback(rewriteFeedback, false, 'Usaste el conector correcto, pero falta mantener la idea original de la frase.', true);
+    }
+  });
+
+  nextSentenceBtn.addEventListener('click', function(){
+    sentenceIndex = (sentenceIndex + 1) % sentences.length;
+    renderSentence();
+  });
+
+  renderSentence();
+
+  /* ============ EXHIBIT C: La trampa irreal ============ */
+  var traps = [
+    {prompt:'My boss is yelling at me ______ (he / be / my father).', pattern:/\bas (if|though)\b.*\bhe were\b.*\bfather\b/, wasPattern:/\bhe was\b.*\bfather\b/},
+    {prompt:'She spends money ______ (she / be / rich).', pattern:/\bas (if|though)\b.*\bshe were\b.*\brich\b/, wasPattern:/\bshe was\b.*\brich\b/},
+    {prompt:'He talks to me ______ (I / be / a child).', pattern:/\bas (if|though)\b.*\bi were\b.*\bchild\b/, wasPattern:/\bi was\b.*\bchild\b/},
+    {prompt:'They act ______ (nothing / be / wrong).', pattern:/\bas (if|though)\b.*\bnothing were\b.*\bwrong\b/, wasPattern:/\bnothing was\b.*\bwrong\b/},
+    {prompt:'My cat looks at me ______ (I / be / crazy).', pattern:/\bas (if|though)\b.*\bi were\b.*\bcrazy\b/, wasPattern:/\bi was\b.*\bcrazy\b/}
+  ];
+  var trapIndex = 0;
+
+  var trapPrompt = document.getElementById('trapPrompt');
+  var trapInput = document.getElementById('trapInput');
+  var checkTrapBtn = document.getElementById('checkTrapBtn');
+  var nextTrapBtn = document.getElementById('nextTrapBtn');
+  var trapFeedback = document.getElementById('trapFeedback');
+  var trapCounter = document.getElementById('trapCounter');
+
+  function loadTrap(){
+    var t = traps[trapIndex];
+    trapPrompt.textContent = t.prompt;
+    trapInput.value = '';
+    trapFeedback.className = 'feedback';
+    trapFeedback.textContent = '';
+    nextTrapBtn.disabled = true;
+    checkTrapBtn.disabled = false;
+    trapCounter.textContent = 'Caso ' + (trapIndex+1) + ' de ' + traps.length;
+  }
+
+  checkTrapBtn.addEventListener('click', function(){
+    var t = traps[trapIndex];
+    var text = trapInput.value.trim().toLowerCase();
+
+    if(t.pattern.test(text)){
+      showFeedback(trapFeedback, true, '¡Exacto! Como la situación no es real, el verbo "to be" tiene que ser "were", sin importar el sujeto.', false);
+      nextTrapBtn.disabled = false;
+      checkTrapBtn.disabled = true;
+    } else if(t.wasPattern.test(text)){
+      showFeedback(trapFeedback, false, 'Casi. Usaste "was", pero como la situación es completamente irreal, la gramática exige "were" para todos los sujetos.', true);
+    } else {
+      showFeedback(trapFeedback, false, 'No es correcto todavía. Recuerda: "as if / as though" + sujeto + "were" + el resto de la idea.', true);
+    }
+  });
+
+  nextTrapBtn.addEventListener('click', function(){
+    trapIndex++;
+    if(trapIndex >= traps.length){
+      markSolved('C');
+      trapPrompt.textContent = 'Todos los casos resueltos. La trampa irreal ya no te atrapa.';
+      trapInput.disabled = true;
+      checkTrapBtn.style.display = 'none';
+      nextTrapBtn.style.display = 'none';
+      trapCounter.textContent = traps.length + ' de ' + traps.length + ' resueltos';
+      return;
+    }
+    loadTrap();
+  });
+
+  loadTrap();
+
+  /* ============ EXHIBIT D: Constructor de exageraciones ============ */
+  var starters = [
+    'My friend acts as though...',
+    'When she won the match, she cried as if...',
+    'My little brother eats as if...',
+    'He talks about his trip as though...',
+    'The teacher looked at us as if...'
+  ];
+  var chosenStarter = starters[0];
+  var wallEntries = [];
+
+  var starterPicker = document.getElementById('starterPicker');
+  var exagInput = document.getElementById('exagInput');
+  var addWallBtn = document.getElementById('addWallBtn');
+  var wallFeedback = document.getElementById('wallFeedback');
+  var wallContainer = document.getElementById('wallContainer');
+
+  starters.forEach(function(s, i){
+    var chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'starter-chip' + (i === 0 ? ' active' : '');
+    chip.textContent = s;
+    chip.addEventListener('click', function(){
+      chosenStarter = s;
+      Array.prototype.forEach.call(starterPicker.children, function(c){ c.classList.remove('active'); });
+      chip.classList.add('active');
+    });
+    starterPicker.appendChild(chip);
+  });
+
+  function renderWall(){
+    if(wallEntries.length === 0){
+      wallContainer.innerHTML = '<p class="wall-empty">El muro está vacío. Sé el primero en exagerar.</p>';
+      return;
+    }
+    wallContainer.innerHTML = '';
+    wallEntries.forEach(function(entry, i){
+      var card = document.createElement('div');
+      card.className = 'wall-card';
+      card.style.setProperty('--r', ((i % 2 === 0) ? '-1.4deg' : '1deg'));
+      card.textContent = entry;
+      wallContainer.appendChild(card);
+    });
+  }
+
+  addWallBtn.addEventListener('click', function(){
+    var ending = exagInput.value.trim();
+    if(ending.length < 3){
+      showFeedback(wallFeedback, false, 'Escribe una idea para completar la frase antes de agregarla al muro.', true);
+      return;
+    }
+    var full = chosenStarter.replace('...', '') + ' ' + ending;
+    wallEntries.unshift(full);
+    renderWall();
+    exagInput.value = '';
+    showFeedback(wallFeedback, true, 'Agregado al muro de exageraciones.', false);
+    markSolved('D');
+  });
+
+  renderWall();
+
+})();
+</script>
+</body>
+</html>
